@@ -11,7 +11,7 @@ public class DesktopLauncher {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
 		config.width = GameConfig.WIDTH;
 		config.height = GameConfig.HEIGHT;
-
+		config.title = "Brick-Breaker";
 		new LwjglApplication(new BrickbreakerGame(NullAdController.INSTANCE), config);
 	}
 }
