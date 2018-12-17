@@ -1,9 +1,11 @@
 package com.jga.brickbreaker.screen.game;
 
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -78,6 +80,12 @@ public class GameRenderer implements Disposable {
     }
 
     private void drawDebug(){
-        renderer.circle(GameConfig.WORLD_CENTER_X, GameConfig.WORLD_CENTER_Y, 3, 30);
+        Color oldColor = renderer.getColor().cpy();
+        renderer.setColor(Color.RED);
+
+        Rectangle paddleBounds = controller.getPaddle().getBounds();
+        renderer.rect(paddleBounds.x, paddleBounds.y, paddleBounds.width, paddleBounds.height);
+
+        renderer.setColor(oldColor);
     }
 }
