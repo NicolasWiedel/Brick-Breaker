@@ -37,13 +37,8 @@ public class ViewportUtils {
      */
     public static void drawGrid(Viewport viewport, ShapeRenderer renderer, int cellSize) {
         // validate parameters/arguments
-        if (viewport == null) {
-            throw new IllegalArgumentException("viewport param is required.");
-        }
-
-        if (renderer == null) {
-            throw new IllegalArgumentException("renderer param is required.");
-        }
+       Validate.notNull(viewport);
+       Validate.notNull(renderer);
 
         if (cellSize < DEFAULT_CELL_SIZE) {
             cellSize = DEFAULT_CELL_SIZE;

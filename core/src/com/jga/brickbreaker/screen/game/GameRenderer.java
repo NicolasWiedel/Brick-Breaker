@@ -13,6 +13,7 @@ import com.jga.brickbreaker.config.GameConfig;
 import com.jga.util.GdxUtils;
 import com.jga.util.ViewportUtils;
 import com.jga.util.debug.DebugCameraController;
+import com.jga.util.debug.ShapeRendererUtils;
 
 public class GameRenderer implements Disposable {
 
@@ -84,7 +85,7 @@ public class GameRenderer implements Disposable {
         renderer.setColor(Color.RED);
 
         Rectangle paddleBounds = controller.getPaddle().getBounds();
-        renderer.rect(paddleBounds.x, paddleBounds.y, paddleBounds.width, paddleBounds.height);
+        ShapeRendererUtils.rect(renderer, paddleBounds);
 
         renderer.setColor(oldColor);
     }
