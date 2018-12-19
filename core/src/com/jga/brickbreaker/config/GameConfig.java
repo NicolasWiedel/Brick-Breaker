@@ -4,10 +4,10 @@ public final class GameConfig {
 
     // == constants ==
     // only for desktop
-    public static final int WIDTH = 960;   // pixels
+    public static final int WIDTH = 1024;   // pixels
     public static final int HEIGHT = 768;  // pixels
 
-    public static final float WORLD_WIDTH = 30f;   // world units
+    public static final float WORLD_WIDTH = 32f;   // world units
     public static final float WORLD_HEIGHT = 24f;  // world units
 
     public static final float WORLD_CENTER_X = WORLD_WIDTH / 2f;  // world units
@@ -18,8 +18,19 @@ public final class GameConfig {
 
     public static final float PADDLE_START_X = (WORLD_WIDTH - PADDLE_WIDTH) / 2f;  // world units
     public static final float PADDLE_START_Y = 1f;  // world units
+    public static final float PADDLE_VELOCITY_X = 15f;   // world units
 
-    public static final float PADDLE_VELOCITY_X = 15f;
+    public static final float BRICK_WIDTH = 2.125f;   // world units
+    public static final float BRICK_HEIGHT = 1f;    // world units
+
+    public static final float LEFT_PAD = 0.5f;   // world units
+    public static final float TOP_PAD = 1.5f;    // world units
+
+    public static final float COLLUMN_SPACING = 0.5f;    // world units
+    public static final int COLLUMN_COUNT = 12;
+
+    public static final float ROW_SPACING = 0.5f;   // world units
+    public static final int ROW_COUNT = 6;
 
     // == constructor ==
     private GameConfig(){

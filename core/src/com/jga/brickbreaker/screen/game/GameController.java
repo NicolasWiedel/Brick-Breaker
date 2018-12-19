@@ -1,6 +1,8 @@
 package com.jga.brickbreaker.screen.game;
 
+import com.badlogic.gdx.utils.Array;
 import com.jga.brickbreaker.config.GameConfig;
+import com.jga.brickbreaker.entity.Brick;
 import com.jga.brickbreaker.entity.EntityFactory;
 import com.jga.brickbreaker.entity.Paddle;
 import com.jga.brickbreaker.input.PaddleInputController;
@@ -11,6 +13,7 @@ public class GameController {
     private EntityFactory factory;
     private Paddle paddle;
     private PaddleInputController paddleInputController;
+    private Array<Brick> bricks = new Array<Brick>();
 
     // == constructor ==
     public GameController() {
@@ -22,6 +25,8 @@ public class GameController {
         factory = new EntityFactory();
         paddle = factory.createPaddle();
         paddleInputController = new PaddleInputController(paddle);
+
+        bricks.addAll(factory.createBricks());
     }
 
     // == public methoods =
@@ -42,5 +47,9 @@ public class GameController {
 
     public Paddle getPaddle() {
         return paddle;
+    }
+
+    public Array<Brick> getBricks() {
+        return bricks;
     }
 }

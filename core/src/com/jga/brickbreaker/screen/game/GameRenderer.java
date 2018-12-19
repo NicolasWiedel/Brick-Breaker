@@ -10,6 +10,7 @@ import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.jga.brickbreaker.config.GameConfig;
+import com.jga.brickbreaker.entity.Brick;
 import com.jga.util.GdxUtils;
 import com.jga.util.ViewportUtils;
 import com.jga.util.debug.DebugCameraController;
@@ -81,12 +82,20 @@ public class GameRenderer implements Disposable {
     }
 
     private void drawDebug(){
+        //save old color
         Color oldColor = renderer.getColor().cpy();
         renderer.setColor(Color.RED);
 
+        // paddle
         Rectangle paddleBounds = controller.getPaddle().getBounds();
         ShapeRendererUtils.rect(renderer, paddleBounds);
 
+        // bricks
+        for(Brick brick : controller.getBricks()){
+            ShapeRendererUtils.rect(renderer, brick.getBounds());
+        }
+
+        // revert to old color
         renderer.setColor(oldColor);
     }
 }
