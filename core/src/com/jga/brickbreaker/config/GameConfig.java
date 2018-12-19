@@ -19,6 +19,8 @@ public final class GameConfig {
     public static final float PADDLE_START_X = (WORLD_WIDTH - PADDLE_WIDTH) / 2f;  // world units
     public static final float PADDLE_START_Y = 1f;  // world units
 
+    public static final float PADDLE_VELOCITY_X = 15f;
+
     // == constructor ==
     private GameConfig(){
 
