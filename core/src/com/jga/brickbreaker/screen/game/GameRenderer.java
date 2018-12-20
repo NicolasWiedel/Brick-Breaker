@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
@@ -94,6 +95,10 @@ public class GameRenderer implements Disposable {
         for(Brick brick : controller.getBricks()){
             ShapeRendererUtils.rect(renderer, brick.getBounds());
         }
+
+        // ball
+        Circle ballBounds = controller.getBall().getBounds();
+        ShapeRendererUtils.circle(renderer, ballBounds);
 
         // revert to old color
         renderer.setColor(oldColor);

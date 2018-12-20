@@ -34,6 +34,13 @@ public class EntityFactory {
         return bricks;
     }
 
+    public Ball createBall(){
+        Ball ball = new Ball();
+        ball.setPosition(GameConfig.BALL_START_X, GameConfig.BALL_START_Y);
+        ball.setSize(GameConfig.BALL_SIZE);
+        return ball;
+    }
+
     // == private method ==
     private Brick createBrick(float x, float y){
         Brick brick = new Brick();

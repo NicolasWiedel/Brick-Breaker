@@ -32,6 +32,12 @@ public final class GameConfig {
     public static final float ROW_SPACING = 0.5f;   // world units
     public static final int ROW_COUNT = 6;
 
+    public static final float BALL_SIZE = 0.8f;    // world units
+    public static final float BALL_HALF_SIZE = BALL_SIZE / 2f;   // world units
+
+    public static final float BALL_START_X = PADDLE_START_X +(PADDLE_WIDTH - BALL_SIZE) / 2f;
+    public static final float BALL_START_Y = PADDLE_START_Y + PADDLE_HEIGHT;
+
     // == constructor ==
     private GameConfig(){
 
