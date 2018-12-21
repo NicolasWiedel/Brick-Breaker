@@ -72,7 +72,10 @@ public class GameRenderer implements Disposable {
     // == private methods
     private void renderDebug(){
         viewport.apply();
-        ViewportUtils.drawGrid(viewport, renderer);
+
+        if(controller.isDrawGrid()) {
+            ViewportUtils.drawGrid(viewport, renderer);
+        }
 
         renderer.setProjectionMatrix(camera.combined);
         renderer.begin(ShapeRenderer.ShapeType.Line);

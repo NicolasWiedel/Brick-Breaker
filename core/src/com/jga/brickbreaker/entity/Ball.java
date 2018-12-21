@@ -21,8 +21,11 @@ public class Ball {
     }
 
     // == public methods ==
-    public void update(float update){
+    public void update(float delta){
+        float newX = x + velocity.x * delta;
+        float newY = y + velocity.y * delta;
 
+        setPosition(newX, newY);
     }
 
     public Vector2 getVelocity() {
@@ -42,7 +45,7 @@ public class Ball {
         velocity.x *= xAmount;
     }
 
-    public void multipyVelocityY(float yAmount){
+    public void multiplyVelocityY(float yAmount){
         velocity.y *= yAmount;
     }
 
@@ -70,7 +73,11 @@ public class Ball {
         updateBounds();
     }
 
-    public float getSize() {
+    public float getWidth(){
+        return size;
+    }
+
+    public float getHeight() {
         return size;
     }
 

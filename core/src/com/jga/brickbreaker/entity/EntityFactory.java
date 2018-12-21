@@ -38,6 +38,7 @@ public class EntityFactory {
         Ball ball = new Ball();
         ball.setPosition(GameConfig.BALL_START_X, GameConfig.BALL_START_Y);
         ball.setSize(GameConfig.BALL_SIZE);
+        ball.setVelocity(GameConfig.BALL_START_ANGLE, GameConfig.BALL_VELOCITY);
         return ball;
     }
 
