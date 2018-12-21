@@ -5,6 +5,8 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.jga.brickbreaker.config.GameConfig;
 import com.jga.brickbreaker.entity.Ball;
@@ -12,6 +14,7 @@ import com.jga.brickbreaker.entity.Brick;
 import com.jga.brickbreaker.entity.EntityFactory;
 import com.jga.brickbreaker.entity.Paddle;
 import com.jga.brickbreaker.input.PaddleInputController;
+import com.jga.shape.RectangelUtils;
 
 public class GameController {
 
@@ -118,6 +121,7 @@ public class GameController {
 
     private void checkCollision(){
         checkBallWithPaddleCollision();
+        checkBallWithBrickCollision();
     }
 
     private void checkBallWithPaddleCollision(){
@@ -130,6 +134,35 @@ public class GameController {
             // interpolate angle between 150 and 30
             float bounceAngle = 150 - percent * 120;
             ball.setVelocity(bounceAngle, ball.getSpeed());
+        }
+    }
+
+    private void checkBallWithBrickCollision(){
+        Circle ballBounds = ball.getBounds();
+
+        for(int i = 0; i < bricks.size; i++){
+            Brick brick = bricks.get(i);
+            Rectangle brichBounds = brick.getBounds();
+
+            if(!Intersector.overlaps(ballBounds, brichBounds)){
+                continue;
+            }
+
+            Vector2 center = new Vector2(ballBounds.x, ballBounds.y);
+            float squareRadius = ballBounds.radius * ballBounds.radius;
+
+            Vector2 topLeft = RectangelUtils.getTopLeft(brichBounds);
+            Vector2 topRight = RectangelUtils.getTopRight(brichBounds);
+
+            boolean topHit = Intersector.intersectSegmentCircle(
+                    topLeft, topRight, center, squareRadius
+            );
+
+            if(ball.getVelocity().y < 0 && topHit){
+                ball.multiplyVelocityY(-1);
+            }
+
+            bricks.removeIndex(i);
         }
     }
 }
