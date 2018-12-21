@@ -90,7 +90,10 @@ public class Ball {
         return bounds;
     }
 
-
+    public float getSpeed(){
+        // length of the velocity vecctor
+        return velocity.len();
+    }
 
     // == private methods ==
     private void updateBounds(){

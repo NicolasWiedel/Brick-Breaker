@@ -2,6 +2,9 @@ package com.jga.brickbreaker.screen.game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.math.Circle;
+import com.badlogic.gdx.math.Intersector;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 import com.jga.brickbreaker.config.GameConfig;
 import com.jga.brickbreaker.entity.Ball;
@@ -86,6 +89,8 @@ public class GameController {
             ball.setX(GameConfig.WORLD_WIDTH - ball.getWidth());
             ball.multiplyVelocityX(-1);
         }
+
+        checkCollision();
     }
 
     public Paddle getPaddle() {
@@ -108,6 +113,23 @@ public class GameController {
     private void handleDebugInput(){
         if(Gdx.input.isKeyJustPressed(Input.Keys.F5)){
             drawGrid = !drawGrid;
+        }
+    }
+
+    private void checkCollision(){
+        checkBallWithPaddleCollision();
+    }
+
+    private void checkBallWithPaddleCollision(){
+        Circle ballBounds = ball.getBounds();
+        Rectangle paddleBounds = paddle.getBounds();
+
+        if(Intersector.overlaps(ballBounds, paddleBounds)){
+            float ballCenterX = ball.getX() + ball.getWidth() / 2f;
+            float percent =(ballCenterX - paddle.getX()) / paddle.getWidth(); // 0f - 1f
+            // interpolate angle between 150 and 30
+            float bounceAngle = 150 - percent * 120;
+            ball.setVelocity(bounceAngle, ball.getSpeed());
         }
     }
 }
