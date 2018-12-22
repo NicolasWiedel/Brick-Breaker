@@ -27,10 +27,10 @@ public final class GameConfig {
     public static final float TOP_PAD = 1.5f;    // world units
 
     public static final float COLLUMN_SPACING = 0.5f;    // world units
-    public static final int COLLUMN_COUNT = 12;
+    public static final int COLLUMN_COUNT = 1; // 12
 
     public static final float ROW_SPACING = 0.5f;   // world units
-    public static final int ROW_COUNT = 6;
+    public static final int ROW_COUNT = 1; // 6
 
     public static final float BALL_SIZE = 0.8f;    // world units
     public static final float BALL_HALF_SIZE = BALL_SIZE / 2f;   // world units

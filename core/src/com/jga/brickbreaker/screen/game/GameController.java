@@ -38,14 +38,22 @@ public class GameController {
         paddle = factory.createPaddle();
         paddleInputController = new PaddleInputController(paddle);
 
-        bricks.addAll(factory.createBricks());
         ball = factory.createBall();
+        startLevel();
     }
 
     // == public methoods =
     public void update(float delta) {
         // handle debug input
         handleDebugInput();
+
+        if(ball.isNotActive() && Gdx.input.justTouched()){
+            activateBall();
+        }
+
+        if(ball.isNotActive()){
+            return;
+        }
 
         // handle paddle input
         paddleInputController.update(delta);
@@ -94,6 +102,10 @@ public class GameController {
         }
 
         checkCollision();
+
+        if(bricks.size == 0){
+            startLevel();
+        }
     }
 
     public Paddle getPaddle() {
@@ -187,5 +199,16 @@ public class GameController {
 
             bricks.removeIndex(i);
         }
+    }
+
+    private void activateBall(){
+        ball.setVelocity(GameConfig.BALL_START_ANGLE, GameConfig.BALL_VELOCITY);
+    }
+
+    private void startLevel(){
+        bricks.addAll(factory.createBricks());
+        paddle.setPosition(GameConfig.PADDLE_START_X, GameConfig.PADDLE_START_Y);
+        ball.setPosition(GameConfig.BALL_START_X, GameConfig.BALL_START_Y);
+        ball.stop();
     }
 }

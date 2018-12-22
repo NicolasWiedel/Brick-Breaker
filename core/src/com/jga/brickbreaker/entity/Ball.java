@@ -95,6 +95,14 @@ public class Ball {
         return velocity.len();
     }
 
+    public void stop(){
+        velocity.setZero();
+    }
+
+    public boolean isNotActive(){
+        return velocity.isZero();
+    }
+
     // == private methods ==
     private void updateBounds(){
         float halfSize = size / 2f;
