@@ -142,23 +142,46 @@ public class GameController {
 
         for(int i = 0; i < bricks.size; i++){
             Brick brick = bricks.get(i);
-            Rectangle brichBounds = brick.getBounds();
+            Rectangle brickBounds = brick.getBounds();
 
-            if(!Intersector.overlaps(ballBounds, brichBounds)){
+            if(!Intersector.overlaps(ballBounds, brickBounds)){
                 continue;
             }
 
             Vector2 center = new Vector2(ballBounds.x, ballBounds.y);
             float squareRadius = ballBounds.radius * ballBounds.radius;
 
-            Vector2 topLeft = RectangelUtils.getTopLeft(brichBounds);
-            Vector2 topRight = RectangelUtils.getTopRight(brichBounds);
+            Vector2 bottomLeft = RectangelUtils.getBottomLeft(brickBounds);
+            Vector2 bottomRight = RectangelUtils.getBottomRight(brickBounds);
+            Vector2 topLeft = RectangelUtils.getTopLeft(brickBounds);
+            Vector2 topRight = RectangelUtils.getTopRight(brickBounds);
 
+            boolean bottomHit = Intersector.intersectSegmentCircle(
+                  bottomLeft, bottomRight, center, squareRadius
+            );
             boolean topHit = Intersector.intersectSegmentCircle(
                     topLeft, topRight, center, squareRadius
             );
+            boolean leftHit = Intersector.intersectSegmentCircle(
+                    bottomLeft, topLeft, center, squareRadius
+            );
+            boolean rightHit = Intersector.intersectSegmentCircle(
+                    bottomRight, topRight, center, squareRadius
+            );
 
-            if(ball.getVelocity().y < 0 && topHit){
+            // left - right
+            if(ball.getVelocity().x > 0 && leftHit){
+                ball.multiplyVelocityX(-1);
+            }
+            else if(ball.getVelocity().x < 0 && rightHit){
+                ball.multiplyVelocityX(-1);
+            }
+
+            // top - bottom
+            if(ball.getVelocity().y > 0 && bottomHit){
+                ball.multiplyVelocityY(-1);
+            }
+            else if(ball.getVelocity().y < 0 && topHit){
                 ball.multiplyVelocityY(-1);
             }
 

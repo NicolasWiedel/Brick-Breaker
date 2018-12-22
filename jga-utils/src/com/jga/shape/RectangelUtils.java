@@ -12,6 +12,18 @@ public class RectangelUtils {
     }
 
     // == pulic methods ==
+    public static Vector2 getBottomLeft(Rectangle rectangle) {
+        Validate.notNull(rectangle);
+
+        return new Vector2(rectangle.x, rectangle.y);
+    }
+
+    public static Vector2 getBottomRight(Rectangle rectangle){
+        Validate.notNull(rectangle);
+
+        return new Vector2(rectangle.x + rectangle.width, rectangle.y);
+    }
+
     public static Vector2 getTopLeft(Rectangle rectangle){
         Validate.notNull(rectangle);
 
