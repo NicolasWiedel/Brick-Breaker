@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.jga.brickbreaker.common.ScoreController;
 import com.jga.brickbreaker.screen.game.GameScreen;
+import com.jga.brickbreaker.screen.loading.LoadingScreen;
 import com.jga.util.ads.AdController;
 import com.jga.util.game.GameBase;
 
@@ -24,7 +25,7 @@ public class BrickbreakerGame extends GameBase {
 	@Override
 	public void postCreate() {
 		scoreController = new ScoreController();
-		setScreen(new GameScreen(this));
+		setScreen(new LoadingScreen(this));
 	}
 
 	public ScoreController getScoreController() {
