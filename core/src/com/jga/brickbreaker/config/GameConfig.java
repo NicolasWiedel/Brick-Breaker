@@ -39,6 +39,8 @@ public final class GameConfig {
     public static final float BALL_VELOCITY = 15f;
     public static final float BALL_START_ANGLE = 60F;
 
+    public static final int BRICK_SCORE = 10;
+
     // == constructor ==
     private GameConfig(){
 
