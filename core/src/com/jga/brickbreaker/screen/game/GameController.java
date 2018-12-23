@@ -8,6 +8,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
+import com.jga.brickbreaker.common.ScoreController;
 import com.jga.brickbreaker.config.GameConfig;
 import com.jga.brickbreaker.entity.Ball;
 import com.jga.brickbreaker.entity.Brick;
@@ -19,6 +20,8 @@ import com.jga.shape.RectangelUtils;
 public class GameController {
 
     // == attributes ==
+    private final ScoreController scoreController;
+
     private EntityFactory factory;
     private Paddle paddle;
     private PaddleInputController paddleInputController;
@@ -28,7 +31,8 @@ public class GameController {
     private boolean drawGrid = true;
 
     // == constructor ==
-    public GameController() {
+    public GameController(ScoreController scoreController) {
+        this.scoreController = scoreController;
         init();
     }
 
@@ -197,7 +201,12 @@ public class GameController {
                 ball.multiplyVelocityY(-1);
             }
 
+            // remove brick
             bricks.removeIndex(i);
+
+            // add score
+            scoreController.addScore(GameConfig.BRICK_SCORE);
+            System.out.println("currentScore = " + scoreController.getScoreScring());
         }
     }
 
