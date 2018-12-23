@@ -43,7 +43,7 @@ public class EntityFactory {
     }
 
     // == private method ==
-    private Brick createBrick(float x, float y){
+    public Brick createBrick(float x, float y){
         Brick brick = new Brick();
         brick.setPosition(x, y);
         brick.setSize(GameConfig.BRICK_WIDTH, GameConfig.BRICK_HEIGHT);
