@@ -27,7 +27,7 @@ public final class GameConfig {
     public static final float BRICK_HEIGHT = 1f;    // world units
 
     public static final float LEFT_PAD = 0.5f;   // world units
-    public static final float TOP_PAD = 1.5f;    // world units
+    public static final float TOP_PAD = 2.5f;    // world units
 
     public static final float COLLUMN_SPACING = 0.5f;    // world units
     public static final int COLLUMN_COUNT = 12; // 12
