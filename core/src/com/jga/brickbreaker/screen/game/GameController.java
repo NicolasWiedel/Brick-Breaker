@@ -137,6 +137,9 @@ public class GameController {
         if(Gdx.input.isKeyJustPressed(Input.Keys.F5)){
             drawGrid = !drawGrid;
         }
+        if(Gdx.input.isKeyJustPressed(Input.Keys.F6)){
+            drawDebug = !drawDebug;
+        }
     }
 
     private void checkCollision(){

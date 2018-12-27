@@ -1,24 +1,35 @@
 package com.jga.brickbreaker.screen.game;
 
+import com.badlogic.gdx.assets.AssetDescriptor;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.jga.brickbreaker.assets.AssetDescriptors;
+import com.jga.brickbreaker.assets.RegionNames;
 import com.jga.brickbreaker.config.GameConfig;
+import com.jga.brickbreaker.entity.Ball;
 import com.jga.brickbreaker.entity.Brick;
+import com.jga.brickbreaker.entity.Paddle;
 import com.jga.util.GdxUtils;
+import com.jga.util.Validate;
 import com.jga.util.ViewportUtils;
 import com.jga.util.debug.DebugCameraController;
 import com.jga.util.debug.ShapeRendererUtils;
+import com.jga.util.entity.EntityBase;
+
+import javax.swing.plaf.synth.Region;
 
 public class GameRenderer implements Disposable {
 
@@ -35,6 +46,11 @@ public class GameRenderer implements Disposable {
     private DebugCameraController debugCameraController;
 
     private BitmapFont scoreFont;
+
+    private TextureRegion backgroundRegion;
+    private TextureRegion paddleRegion;
+    private TextureRegion ballRegion;
+    private TextureRegion brickRegion;
 
     // == constructor ==
     public GameRenderer(GameController controller, SpriteBatch batch, AssetManager assetManager) {
@@ -55,6 +71,12 @@ public class GameRenderer implements Disposable {
         debugCameraController.setStartPosition(GameConfig.WORLD_CENTER_X, GameConfig.WORLD_CENTER_Y);
 
         scoreFont = assetManager.get(AssetDescriptors.FONT);
+
+        TextureAtlas gamePlayAtlas = assetManager.get(AssetDescriptors.GAME_PLAY);
+        backgroundRegion = gamePlayAtlas.findRegion(RegionNames.BACKGROUND);
+        paddleRegion = gamePlayAtlas.findRegion(RegionNames.PADDLE);
+        ballRegion = gamePlayAtlas.findRegion(RegionNames.BALL);
+        brickRegion = gamePlayAtlas.findRegion(RegionNames.BRICK);
     }
 
     // == public methods ==
@@ -64,6 +86,8 @@ public class GameRenderer implements Disposable {
 
         // clear screen
         GdxUtils.clearScreen();
+
+        renderGamePlay();
 
         renderDebug();
 
@@ -82,6 +106,36 @@ public class GameRenderer implements Disposable {
     }
 
     // == private methods
+    private void renderGamePlay(){
+        viewport.apply();
+        batch.setProjectionMatrix(camera.combined);
+        batch.begin();
+
+        drawGamePlay();
+
+        batch.end();
+    }
+
+    private void drawGamePlay(){
+        // background
+        batch.draw(backgroundRegion, 0,0, GameConfig.WORLD_WIDTH, GameConfig.WORLD_HEIGHT);
+
+        //paddle
+        Paddle paddle = controller.getPaddle();
+        drawEntity(batch, paddleRegion, paddle);
+
+        // ball
+        Ball ball = controller.getBall();
+        batch.draw(ballRegion, ball.getX(), ball.getY(), ball.getWidth(), ball.getHeight());
+
+        // bricks
+        Array<Brick> bricks = controller.getBricks();
+        for(int i = 0; i < bricks.size; i++){
+            Brick brick = bricks.get(i);
+            drawEntity(batch, brickRegion, brick);
+        }
+    }
+
     private void renderDebug(){
         viewport.apply();
 
@@ -135,5 +189,14 @@ public class GameRenderer implements Disposable {
         layout.setText(scoreFont, scoreString);
         scoreFont.draw(batch, layout,
                 0, GameConfig.HUD_HEIGHT - layout.height);
+    }
+
+    // == static methods ==
+    private static void drawEntity(SpriteBatch batch, TextureRegion region, EntityBase entity){
+        Validate.notNull(batch);
+        Validate.notNull(region);
+        Validate.notNull(entity);
+
+        batch.draw(region, entity.getX(), entity.getY(), entity.getWidth(), entity.getHeight());
     }
 }
