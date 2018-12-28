@@ -2,6 +2,7 @@ package com.jga.brickbreaker.screen.game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.g2d.ParticleEffectPool;
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Rectangle;
@@ -21,7 +22,7 @@ public class GameController {
     // == attributes ==
     private final ScoreController scoreController;
 
-    private EntityFactory factory;
+    private final EntityFactory factory;
     private Paddle paddle;
     private PaddleInputController paddleInputController;
     private Array<Brick> bricks = new Array<Brick>();
@@ -30,15 +31,17 @@ public class GameController {
     private boolean drawGrid = true;
     private boolean drawDebug = true;
 
+    private Array<ParticleEffectPool.PooledEffect> effects = new Array<ParticleEffectPool.PooledEffect>();
+
     // == constructor ==
-    public GameController(ScoreController scoreController) {
+    public GameController(ScoreController scoreController, EntityFactory factory) {
+        this.factory = factory;
         this.scoreController = scoreController;
         init();
     }
 
     // == init ==
     private void init(){
-        factory = new EntityFactory();
         paddle = factory.createPaddle();
         paddleInputController = new PaddleInputController(paddle);
 
@@ -212,6 +215,12 @@ public class GameController {
                 ball.multiplyVelocityY(-1);
             }
 
+            // create fire effect
+            float effectX = brick.getX() + brick.getWidth() / 2f;
+            float effectY = brick.getY() + brick.getHeight() / 2f;
+
+            spawnFireEffect(effectX, effectY);
+
             // remove brick
             bricks.removeIndex(i);
 
@@ -230,5 +239,10 @@ public class GameController {
         paddle.setPosition(GameConfig.PADDLE_START_X, GameConfig.PADDLE_START_Y);
         ball.setPosition(GameConfig.BALL_START_X, GameConfig.BALL_START_Y);
         ball.stop();
+    }
+
+    private void spawnFireEffect(float x, float y){
+        ParticleEffectPool.PooledEffect effeect = factory.createFire(x, y);
+        effects.add(effeect);
     }
 }
