@@ -1,6 +1,5 @@
 package com.jga.brickbreaker.screen.game;
 
-import com.badlogic.gdx.assets.AssetDescriptor;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -28,8 +27,6 @@ import com.jga.util.ViewportUtils;
 import com.jga.util.debug.DebugCameraController;
 import com.jga.util.debug.ShapeRendererUtils;
 import com.jga.util.entity.EntityBase;
-
-import javax.swing.plaf.synth.Region;
 
 public class GameRenderer implements Disposable {
 
@@ -143,12 +140,14 @@ public class GameRenderer implements Disposable {
             ViewportUtils.drawGrid(viewport, renderer);
         }
 
-        renderer.setProjectionMatrix(camera.combined);
-        renderer.begin(ShapeRenderer.ShapeType.Line);
+        if(controller.isDrawDebug()) {
+            renderer.setProjectionMatrix(camera.combined);
+            renderer.begin(ShapeRenderer.ShapeType.Line);
 
-        drawDebug();
+            drawDebug();
 
-        renderer.end();
+            renderer.end();
+        }
     }
 
     private void drawDebug(){

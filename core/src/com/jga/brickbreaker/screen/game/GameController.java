@@ -5,7 +5,6 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.math.Vector;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.jga.brickbreaker.common.ScoreController;
@@ -29,6 +28,7 @@ public class GameController {
     private Ball ball;
 
     private boolean drawGrid = true;
+    private boolean drawDebug = true;
 
     // == constructor ==
     public GameController(ScoreController scoreController) {
@@ -130,6 +130,10 @@ public class GameController {
 
     public boolean isDrawGrid() {
         return drawGrid;
+    }
+
+    public boolean isDrawDebug() {
+        return drawDebug;
     }
 
     // == private methods ==
