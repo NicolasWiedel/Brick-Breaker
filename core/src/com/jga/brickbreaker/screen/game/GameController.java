@@ -110,6 +110,16 @@ public class GameController {
 
         checkCollision();
 
+        for( int i = 0; i < effects.size; i++){
+            ParticleEffectPool.PooledEffect effect = effects.get(i);
+            effect.update(delta);
+
+            if(effect.isComplete()){
+                effects.removeIndex(i);
+                effect.free();
+            }
+        }
+
         if(bricks.size == 0){
             startLevel();
         }
@@ -125,6 +135,10 @@ public class GameController {
 
     public Ball getBall() {
         return ball;
+    }
+
+    public Array<ParticleEffectPool.PooledEffect> getEffects() {
+        return effects;
     }
 
     public String getScoreString(){

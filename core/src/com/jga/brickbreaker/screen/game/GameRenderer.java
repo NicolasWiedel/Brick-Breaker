@@ -5,6 +5,8 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
+import com.badlogic.gdx.graphics.g2d.ParticleEffect;
+import com.badlogic.gdx.graphics.g2d.ParticleEffectPool;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -130,6 +132,14 @@ public class GameRenderer implements Disposable {
         for(int i = 0; i < bricks.size; i++){
             Brick brick = bricks.get(i);
             drawEntity(batch, brickRegion, brick);
+        }
+
+        // effects
+        Array<ParticleEffectPool.PooledEffect> effects = controller.getEffects();
+
+        for(int i = 0; i < effects.size; i++){
+            ParticleEffectPool.PooledEffect effect = effects.get(i);
+            effect.draw(batch);
         }
     }
 
