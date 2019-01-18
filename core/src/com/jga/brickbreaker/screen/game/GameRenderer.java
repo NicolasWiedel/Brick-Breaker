@@ -23,12 +23,14 @@ import com.jga.brickbreaker.config.GameConfig;
 import com.jga.brickbreaker.entity.Ball;
 import com.jga.brickbreaker.entity.Brick;
 import com.jga.brickbreaker.entity.Paddle;
+import com.jga.brickbreaker.entity.Pickup;
 import com.jga.util.GdxUtils;
 import com.jga.util.Validate;
 import com.jga.util.ViewportUtils;
 import com.jga.util.debug.DebugCameraController;
 import com.jga.util.debug.ShapeRendererUtils;
 import com.jga.util.entity.EntityBase;
+import com.sun.corba.se.impl.orb.ParserTable;
 
 public class GameRenderer implements Disposable {
 
@@ -50,6 +52,11 @@ public class GameRenderer implements Disposable {
     private TextureRegion paddleRegion;
     private TextureRegion ballRegion;
     private TextureRegion brickRegion;
+
+    private TextureRegion expandRegion;
+    private TextureRegion shrinkRegion;
+    private TextureRegion slowDownRegion;
+    private TextureRegion speedUpRegion;
 
     // == constructor ==
     public GameRenderer(GameController controller, SpriteBatch batch, AssetManager assetManager) {
@@ -76,6 +83,11 @@ public class GameRenderer implements Disposable {
         paddleRegion = gamePlayAtlas.findRegion(RegionNames.PADDLE);
         ballRegion = gamePlayAtlas.findRegion(RegionNames.BALL);
         brickRegion = gamePlayAtlas.findRegion(RegionNames.BRICK);
+
+        expandRegion = gamePlayAtlas.findRegion(RegionNames.EXPAND);
+        shrinkRegion = gamePlayAtlas.findRegion(RegionNames.SHRINK);
+        slowDownRegion = gamePlayAtlas.findRegion(RegionNames.SLOW_DOWN);
+        speedUpRegion = gamePlayAtlas.findRegion(RegionNames.SPEED_UP);
     }
 
     // == public methods ==
@@ -134,6 +146,15 @@ public class GameRenderer implements Disposable {
             drawEntity(batch, brickRegion, brick);
         }
 
+        // pickups
+        Array<Pickup> pickups = controller.getPickups();
+
+        for(int i = 0; i < pickups.size; i++){
+            Pickup pickup = pickups.get(i);
+            TextureRegion pickupRegion = findPickupRegion(pickup);
+            drawEntity(batch, pickupRegion, pickup);
+        }
+
         // effects
         Array<ParticleEffectPool.PooledEffect> effects = controller.getEffects();
 
@@ -178,6 +199,14 @@ public class GameRenderer implements Disposable {
         Circle ballBounds = controller.getBall().getBounds();
         ShapeRendererUtils.circle(renderer, ballBounds);
 
+        // pickups
+        Array<Pickup> pickups = controller.getPickups();
+        for(int i = 0; i < pickups.size; i++){
+            Pickup pickup = pickups.get(i);
+            Rectangle pickupBounds = pickup.getBounds();
+            ShapeRendererUtils.rect(renderer, pickupBounds);
+        }
+
         // revert to old color
         renderer.setColor(oldColor);
     }
@@ -198,6 +227,26 @@ public class GameRenderer implements Disposable {
         layout.setText(scoreFont, scoreString);
         scoreFont.draw(batch, layout,
                 0, GameConfig.HUD_HEIGHT - layout.height);
+    }
+
+    private TextureRegion findPickupRegion(Pickup pickup){
+        TextureRegion region = null;
+
+        if(pickup.isExpand()){
+            region = expandRegion;
+        } else if(pickup.isShrink()){
+            region = shrinkRegion;
+        } else if(pickup.isSpeedUp()){
+            region = speedUpRegion;
+        } else if(pickup.isSlowDown()){
+            region = slowDownRegion;
+        }
+
+        if(region == null){
+            throw new IllegalArgumentException("Can not find region for pickupType " + pickup.getType());
+        }
+
+       return region;
     }
 
     // == static methods ==

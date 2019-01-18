@@ -41,9 +41,14 @@ public class Pickup extends EntityBase implements Pool.Poolable{
         return type.isSpeedUp();
     }
 
+    public PickupType getType() {
+        return type;
+    }
+    
     @Override
     public void reset() {
         type = null;
         velocity.setZero();
     }
+
 }

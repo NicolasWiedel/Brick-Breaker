@@ -5,6 +5,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.ParticleEffectPool;
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Intersector;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
@@ -14,6 +15,7 @@ import com.jga.brickbreaker.entity.Ball;
 import com.jga.brickbreaker.entity.Brick;
 import com.jga.brickbreaker.entity.EntityFactory;
 import com.jga.brickbreaker.entity.Paddle;
+import com.jga.brickbreaker.entity.Pickup;
 import com.jga.brickbreaker.input.PaddleInputController;
 import com.jga.shape.RectangelUtils;
 
@@ -32,6 +34,7 @@ public class GameController {
     private boolean drawDebug = true;
 
     private Array<ParticleEffectPool.PooledEffect> effects = new Array<ParticleEffectPool.PooledEffect>();
+    private Array<Pickup> pickups = new Array<Pickup>();
 
     // == constructor ==
     public GameController(ScoreController scoreController, EntityFactory factory) {
@@ -108,6 +111,16 @@ public class GameController {
             ball.multiplyVelocityX(-1);
         }
 
+        for(int i = 0; i < pickups.size; i++){
+            Pickup pickup = pickups.get(i);
+            pickup.update(delta);
+
+            if(pickup.getY() < -pickup.getHeight()){
+                factory.freePickup(pickup);
+                pickups.removeIndex(i);
+            }
+        }
+
         checkCollision();
 
         for( int i = 0; i < effects.size; i++){
@@ -135,6 +148,10 @@ public class GameController {
 
     public Ball getBall() {
         return ball;
+    }
+
+    public Array<Pickup> getPickups() {
+        return pickups;
     }
 
     public Array<ParticleEffectPool.PooledEffect> getEffects() {
@@ -231,9 +248,14 @@ public class GameController {
 
             // create fire effect
             float effectX = brick.getX() + brick.getWidth() / 2f;
-            float effectY = brick.getY() + brick.getHeight() / 2f;
+            float y = brick.getY() + brick.getHeight() / 2f;
 
-            spawnFireEffect(effectX, effectY);
+            spawnFireEffect(effectX, y);
+
+//            if(MathUtils.random() < 0.20f){
+                float pickupX = brick.getX() + (brick.getWidth() - GameConfig.PICKUP_SIZE) / 2f;
+                spawnPickup(pickupX, y);
+//            }
 
             // remove brick
             bricks.removeIndex(i);
@@ -258,5 +280,10 @@ public class GameController {
     private void spawnFireEffect(float x, float y){
         ParticleEffectPool.PooledEffect effeect = factory.createFire(x, y);
         effects.add(effeect);
+    }
+
+    private void spawnPickup(float x, float y){
+        Pickup pickup = factory.createPickup(x, y);
+        pickups.add(pickup);
     }
 }
