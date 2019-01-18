@@ -16,7 +16,9 @@ public class Pickup extends EntityBase implements Pool.Poolable{
     }
 
     // == public methods ==
+    @Override
     public void update(float delta){
+        super.update(delta);
         setY(y + velocity.y * delta);
     }
 

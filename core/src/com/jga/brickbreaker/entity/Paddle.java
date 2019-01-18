@@ -13,7 +13,9 @@ public class Paddle extends EntityBase {
     }
 
     // public methods ==
+    @Override
     public void update(float delta){
+        super.update(delta);
         setX(x + velocity.x * delta);
     }
 
