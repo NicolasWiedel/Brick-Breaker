@@ -44,7 +44,7 @@ public class Pickup extends EntityBase implements Pool.Poolable{
     public PickupType getType() {
         return type;
     }
-    
+
     @Override
     public void reset() {
         type = null;

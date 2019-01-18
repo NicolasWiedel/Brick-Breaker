@@ -183,6 +183,7 @@ public class GameController {
     private void checkCollision(){
         checkBallWithPaddleCollision();
         checkBallWithBrickCollision();
+        checkPaddleWithPickupCollision();
     }
 
     private void checkBallWithPaddleCollision(){
@@ -263,6 +264,20 @@ public class GameController {
             // add score
             scoreController.addScore(GameConfig.BRICK_SCORE);
             System.out.println("currentScore = " + scoreController.getScoreScring());
+        }
+    }
+
+    private void checkPaddleWithPickupCollision(){
+        Rectangle paddleBounds = paddle.getBounds();
+
+        for(int i = 0; i < pickups.size; i++){
+            Pickup pickup = pickups.get(i);
+            Rectangle pickupBounds = pickup.getBounds();
+
+            if(Intersector.overlaps(paddleBounds, pickupBounds)){
+                pickups.removeIndex(i);
+                factory.freePickup(pickup);
+            }
         }
     }
 
