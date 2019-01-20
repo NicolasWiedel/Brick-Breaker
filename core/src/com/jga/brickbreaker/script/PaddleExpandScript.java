@@ -33,7 +33,7 @@ public class PaddleExpandScript extends EntityScriptBase<Paddle> {
         }
 
         float currentWidth = entity.getWidth();
-        float newWidth = currentWidth + currentWidth * delta * 2f;
+        float newWidth = currentWidth + GameConfig.PADDLE_EXPAND_SHRINK_SPEED * delta;
 
         if(newWidth >= finalWidth){
             newWidth = finalWidth;

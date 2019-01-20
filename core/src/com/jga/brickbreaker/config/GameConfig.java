@@ -24,6 +24,7 @@ public final class GameConfig {
     public static final float PADDLE_START_Y = 1f;  // world units
     public static final float PADDLE_VELOCITY_X = 15f;   // world units
     public static final float PADDLE_RESIZE_FACTOR = 0.15f;
+    public static final float PADDLE_EXPAND_SHRINK_SPEED = 6f;
 
     public static final float BRICK_WIDTH = 2.125f;   // world units
     public static final float BRICK_HEIGHT = 1f;    // world units

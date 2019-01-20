@@ -5,7 +5,6 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.ParticleEffectPool;
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Intersector;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
@@ -18,6 +17,7 @@ import com.jga.brickbreaker.entity.Paddle;
 import com.jga.brickbreaker.entity.Pickup;
 import com.jga.brickbreaker.input.PaddleInputController;
 import com.jga.brickbreaker.script.PaddleExpandScript;
+import com.jga.brickbreaker.script.PaddleShrinkScript;
 import com.jga.shape.RectangelUtils;
 
 public class GameController {
@@ -69,70 +69,26 @@ public class GameController {
         // handle paddle input
         paddleInputController.update(delta);
 
-        // updet paddle
+        // update paddle
         paddle.update(delta);
 
         // blocking paddle from leaving world
-        if(paddle.getX() <= 0){
-            paddle.setX(0);
-        }
+        blockPaddleFromLeavingWorld();
 
-        float paddleRightX = paddle.getX() + paddle.getWidth();
-        if(paddleRightX >= GameConfig.WORLD_WIDTH){
-            paddle.setX(GameConfig.WORLD_WIDTH - paddle.getWidth());
-        }
 
-        // updet ball
+        // update ball
         ball.update(delta);
 
         // blocking ball from leaving world
-        // bottom
-        if (ball.getY() <= 0){
-            ball.setY(0);
-            ball.multiplyVelocityY(-1);
-        }
+        blockBallFromLeavingWorld();
 
-        // top
-        float ballTop = ball.getY() + ball.getHeight();
-        if(ballTop >= GameConfig.WORLD_HEIGHT){
-            ball.setY(GameConfig.WORLD_HEIGHT - ball.getHeight());
-            ball.multiplyVelocityY(-1);
-        }
+        // update pickups
+        updatePickups(delta);
 
-        // left
-        if(ball.getX() <= 0){
-            ball.setX(0);
-            ball.multiplyVelocityX(-1);
-        }
-
-        // right
-        float ballRight = ball.getX() + ball.getWidth();
-        if(ballRight >= GameConfig.WORLD_WIDTH){
-            ball.setX(GameConfig.WORLD_WIDTH - ball.getWidth());
-            ball.multiplyVelocityX(-1);
-        }
-
-        for(int i = 0; i < pickups.size; i++){
-            Pickup pickup = pickups.get(i);
-            pickup.update(delta);
-
-            if(pickup.getY() < -pickup.getHeight()){
-                factory.freePickup(pickup);
-                pickups.removeIndex(i);
-            }
-        }
+        // update effects
+        updateEffects(delta);
 
         checkCollision();
-
-        for( int i = 0; i < effects.size; i++){
-            ParticleEffectPool.PooledEffect effect = effects.get(i);
-            effect.update(delta);
-
-            if(effect.isComplete()){
-                effects.removeIndex(i);
-                effect.free();
-            }
-        }
 
         if(bricks.size == 0){
             startLevel();
@@ -178,6 +134,72 @@ public class GameController {
         }
         if(Gdx.input.isKeyJustPressed(Input.Keys.F6)){
             drawDebug = !drawDebug;
+        }
+    }
+
+    private void blockPaddleFromLeavingWorld() {
+        // block left
+        if(paddle.getX() <= 0){
+            paddle.setX(0);
+        }
+
+        // block right
+        float paddleRightX = paddle.getX() + paddle.getWidth();
+
+        if(paddleRightX >= GameConfig.WORLD_WIDTH){
+            paddle.setX(GameConfig.WORLD_WIDTH - paddle.getWidth());
+        }
+    }
+
+    private void blockBallFromLeavingWorld() {
+        // bottom
+        if (ball.getY() <= 0){
+            ball.setY(0);
+            ball.multiplyVelocityY(-1);
+        }
+
+        // top
+        float ballTop = ball.getY() + ball.getHeight();
+        if(ballTop >= GameConfig.WORLD_HEIGHT){
+            ball.setY(GameConfig.WORLD_HEIGHT - ball.getHeight());
+            ball.multiplyVelocityY(-1);
+        }
+
+        // left
+        if(ball.getX() <= 0){
+            ball.setX(0);
+            ball.multiplyVelocityX(-1);
+        }
+
+        // right
+        float ballRight = ball.getX() + ball.getWidth();
+        if(ballRight >= GameConfig.WORLD_WIDTH){
+            ball.setX(GameConfig.WORLD_WIDTH - ball.getWidth());
+            ball.multiplyVelocityX(-1);
+        }
+    }
+
+    private void updateEffects(float delta) {
+        for( int i = 0; i < effects.size; i++){
+            ParticleEffectPool.PooledEffect effect = effects.get(i);
+            effect.update(delta);
+
+            if(effect.isComplete()){
+                effects.removeIndex(i);
+                effect.free();
+            }
+        }
+    }
+
+    private void updatePickups(float delta) {
+        for(int i = 0; i < pickups.size; i++){
+            Pickup pickup = pickups.get(i);
+            pickup.update(delta);
+
+            if(pickup.getY() < -pickup.getHeight()){
+                factory.freePickup(pickup);
+                pickups.removeIndex(i);
+            }
         }
     }
 
@@ -307,6 +329,8 @@ public class GameController {
     private void addScript(Pickup pickup){
         if(pickup.isExpand()){
             paddle.addScript(new PaddleExpandScript());
+        }else if(pickup.isShrink()){
+            paddle.addScript(new PaddleShrinkScript());
         }
     }
 }
