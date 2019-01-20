@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.jga.brickbreaker.BrickbreakerGame;
 import com.jga.brickbreaker.common.ScoreController;
 import com.jga.brickbreaker.entity.EntityFactory;
+import com.jga.brickbreaker.input.PaddleInputController;
 import com.jga.util.game.GameBase;
 
 public class GameScreen extends ScreenAdapter {
@@ -16,9 +17,12 @@ public class GameScreen extends ScreenAdapter {
     private final SpriteBatch batch;
     private final ScoreController scoreController;
 
-    private GameController controller;
-    private GameRenderer renderer;
+    private GameWorld gameWorld; // model
+    private GameController controller; // controller
+    private GameRenderer renderer; // view
+
     private EntityFactory factory;
+    private PaddleInputController paddleInputController;
 
     // == constructor ==
     public GameScreen(GameBase game){
@@ -33,12 +37,15 @@ public class GameScreen extends ScreenAdapter {
     @Override
     public void show() {
         factory = new EntityFactory(assetManager);
-        controller = new GameController(scoreController, factory);
-        renderer = new GameRenderer(controller, batch, assetManager);
+        gameWorld = new GameWorld(scoreController, factory);
+        renderer = new GameRenderer(gameWorld, batch, assetManager);
+        controller = new GameController(gameWorld, renderer);
 
+        paddleInputController = new PaddleInputController(gameWorld.getPaddle(), controller);
     }
     @Override
     public void render(float delta) {
+        paddleInputController.update(delta);
         controller.update(delta);
         renderer.render(delta);
     }

@@ -36,7 +36,7 @@ import com.sun.corba.se.impl.orb.ParserTable;
 public class GameRenderer implements Disposable {
 
     // == attributes ==
-    private final GameController controller;
+    private final GameWorld gameWorld;
     private final SpriteBatch batch;
     private final AssetManager assetManager;
     private final GlyphLayout layout = new GlyphLayout();
@@ -60,8 +60,8 @@ public class GameRenderer implements Disposable {
     private TextureRegion speedUpRegion;
 
     // == constructor ==
-    public GameRenderer(GameController controller, SpriteBatch batch, AssetManager assetManager) {
-        this.controller = controller;
+    public GameRenderer(GameWorld gameWorld, SpriteBatch batch, AssetManager assetManager) {
+        this.gameWorld = gameWorld;
         this.batch = batch;
         this.assetManager = assetManager;
         init();
@@ -133,22 +133,22 @@ public class GameRenderer implements Disposable {
         batch.draw(backgroundRegion, 0,0, GameConfig.WORLD_WIDTH, GameConfig.WORLD_HEIGHT);
 
         //paddle
-        Paddle paddle = controller.getPaddle();
+        Paddle paddle = gameWorld.getPaddle();
         drawEntity(batch, paddleRegion, paddle);
 
         // ball
-        Ball ball = controller.getBall();
+        Ball ball = gameWorld.getBall();
         batch.draw(ballRegion, ball.getX(), ball.getY(), ball.getWidth(), ball.getHeight());
 
         // bricks
-        Array<Brick> bricks = controller.getBricks();
+        Array<Brick> bricks = gameWorld.getBricks();
         for(int i = 0; i < bricks.size; i++){
             Brick brick = bricks.get(i);
             drawEntity(batch, brickRegion, brick);
         }
 
         // pickups
-        Array<Pickup> pickups = controller.getPickups();
+        Array<Pickup> pickups = gameWorld.getPickups();
 
         for(int i = 0; i < pickups.size; i++){
             Pickup pickup = pickups.get(i);
@@ -157,7 +157,7 @@ public class GameRenderer implements Disposable {
         }
 
         // effects
-        Array<ParticleEffectPool.PooledEffect> effects = controller.getEffects();
+        Array<ParticleEffectPool.PooledEffect> effects = gameWorld.getEffects();
 
         for(int i = 0; i < effects.size; i++){
             ParticleEffectPool.PooledEffect effect = effects.get(i);
@@ -168,11 +168,11 @@ public class GameRenderer implements Disposable {
     private void renderDebug(){
         viewport.apply();
 
-        if(controller.isDrawGrid()) {
+        if(gameWorld.isDrawGrid()) {
             ViewportUtils.drawGrid(viewport, renderer);
         }
 
-        if(controller.isDrawDebug()) {
+        if(gameWorld.isDrawDebug()) {
             renderer.setProjectionMatrix(camera.combined);
             renderer.begin(ShapeRenderer.ShapeType.Line);
 
@@ -188,20 +188,20 @@ public class GameRenderer implements Disposable {
         renderer.setColor(Color.RED);
 
         // paddle
-        Polygon paddleBounds = controller.getPaddle().getBounds();
+        Polygon paddleBounds = gameWorld.getPaddle().getBounds();
         ShapeRendererUtils.polygon(renderer, paddleBounds);
 
         // bricks
-        for(Brick brick : controller.getBricks()){
+        for(Brick brick : gameWorld.getBricks()){
             ShapeRendererUtils.polygon(renderer, brick.getBounds());
         }
 
         // ball
-        Polygon ballBounds = controller.getBall().getBounds();
+        Polygon ballBounds = gameWorld.getBall().getBounds();
         ShapeRendererUtils.polygon(renderer, ballBounds);
 
         // pickups
-        Array<Pickup> pickups = controller.getPickups();
+        Array<Pickup> pickups = gameWorld.getPickups();
         for(int i = 0; i < pickups.size; i++){
             Pickup pickup = pickups.get(i);
             Polygon pickupBounds = pickup.getBounds();
@@ -224,7 +224,7 @@ public class GameRenderer implements Disposable {
     }
 
     private void drawHud(){
-        String  scoreString = "SCORE: " + controller.getScoreString();
+        String  scoreString = "SCORE: " + gameWorld.getScoreString();
         layout.setText(scoreFont, scoreString);
         scoreFont.draw(batch, layout,
                 0, GameConfig.HUD_HEIGHT - layout.height);
