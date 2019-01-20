@@ -9,6 +9,8 @@ public final class AssetPaths {
 
     public static final String FIRE = "effects/fire.pfx";
 
+    public static final String STAR = "effects/star.pfx";
+
     // == constructor ==
     private AssetPaths(){
 

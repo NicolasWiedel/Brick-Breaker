@@ -311,7 +311,11 @@ public class GameController {
             Polygon pickupBounds = pickup.getBounds();
 
             if(Intersector.overlapConvexPolygons(paddleBounds, pickupBounds)){
+                float x = pickup.getX() + pickup.getWidth() / 2;
+                float y = pickup.getY();
+
                 addScript(pickup);
+                spawnStarEffect(x, y);
                 pickups.removeIndex(i);
                 factory.freePickup(pickup);
             }
@@ -332,6 +336,11 @@ public class GameController {
     private void spawnFireEffect(float x, float y){
         ParticleEffectPool.PooledEffect effeect = factory.createFire(x, y);
         effects.add(effeect);
+    }
+
+    private void spawnStarEffect(float x, float y){
+        ParticleEffectPool.PooledEffect effect = factory.createStar(x, y);
+        effects.add(effect);
     }
 
     private void spawnPickup(float x, float y){

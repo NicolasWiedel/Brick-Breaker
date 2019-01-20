@@ -18,6 +18,9 @@ public final class AssetDescriptors {
     public static final AssetDescriptor<ParticleEffect> FIRE =
             new AssetDescriptor<ParticleEffect>(AssetPaths.FIRE, ParticleEffect.class);
 
+    public static final AssetDescriptor<ParticleEffect> STAR =
+            new AssetDescriptor<ParticleEffect>(AssetPaths.STAR, ParticleEffect.class);
+
     public static final Array<AssetDescriptor> ALL = new Array<AssetDescriptor>();
 
     // == static init ==
@@ -25,7 +28,8 @@ public final class AssetDescriptors {
         ALL.addAll(
                 FONT,
                 GAME_PLAY,
-                FIRE
+                FIRE,
+                STAR
         );
     }
 
