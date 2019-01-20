@@ -17,6 +17,7 @@ import com.jga.brickbreaker.entity.EntityFactory;
 import com.jga.brickbreaker.entity.Paddle;
 import com.jga.brickbreaker.entity.Pickup;
 import com.jga.brickbreaker.input.PaddleInputController;
+import com.jga.brickbreaker.script.PaddleExpandScript;
 import com.jga.shape.RectangelUtils;
 
 public class GameController {
@@ -275,6 +276,7 @@ public class GameController {
             Rectangle pickupBounds = pickup.getBounds();
 
             if(Intersector.overlaps(paddleBounds, pickupBounds)){
+                addScript(pickup);
                 pickups.removeIndex(i);
                 factory.freePickup(pickup);
             }
@@ -300,5 +302,11 @@ public class GameController {
     private void spawnPickup(float x, float y){
         Pickup pickup = factory.createPickup(x, y);
         pickups.add(pickup);
+    }
+
+    private void addScript(Pickup pickup){
+        if(pickup.isExpand()){
+            paddle.addScript(new PaddleExpandScript());
+        }
     }
 }

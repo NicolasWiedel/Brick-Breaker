@@ -23,8 +23,12 @@ public abstract class EntityBase {
 
     // == constructors ==
     public EntityBase() {
-        scriptController = new ScriptController(this);
+        init();
+    }
+
+    private void init(){
         bounds = new Rectangle(x, y, width, height);
+        scriptController = new ScriptController(this);
     }
 
     // == public methods ==
@@ -66,6 +70,11 @@ public abstract class EntityBase {
         return width;
     }
 
+    public void setWidth(float width) {
+        this.width = width;
+        updateBounds();
+    }
+
     public float getHeight() {
         return height;
     }
@@ -88,5 +97,4 @@ public abstract class EntityBase {
 
         scriptController.removeScript(toRemove);
     }
-
 }

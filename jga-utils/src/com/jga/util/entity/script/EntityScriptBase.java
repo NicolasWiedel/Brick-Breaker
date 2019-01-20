@@ -9,12 +9,12 @@ public abstract class EntityScriptBase<T extends EntityBase> implements EntitySc
 
     // == attributes ==
     private boolean finished;
-
     protected T entity;
 
     // == public methods ==
     @Override
     public void added(T entity) {
+
         this.entity = entity;
     }
 
