@@ -5,6 +5,7 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.jga.brickbreaker.BrickbreakerGame;
 import com.jga.brickbreaker.common.ScoreController;
+import com.jga.brickbreaker.common.SoundController;
 import com.jga.brickbreaker.entity.EntityFactory;
 import com.jga.brickbreaker.input.PaddleInputController;
 import com.jga.util.game.GameBase;
@@ -23,6 +24,7 @@ public class GameScreen extends ScreenAdapter {
 
     private EntityFactory factory;
     private PaddleInputController paddleInputController;
+    private SoundController soundController;
 
     // == constructor ==
     public GameScreen(GameBase game){
@@ -37,7 +39,8 @@ public class GameScreen extends ScreenAdapter {
     @Override
     public void show() {
         factory = new EntityFactory(assetManager);
-        gameWorld = new GameWorld(scoreController, factory);
+        soundController = new SoundController(assetManager);
+        gameWorld = new GameWorld(soundController, scoreController, factory);
         renderer = new GameRenderer(gameWorld, batch, assetManager);
         controller = new GameController(gameWorld, renderer);
 

@@ -10,6 +10,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.jga.brickbreaker.common.ScoreController;
+import com.jga.brickbreaker.common.SoundController;
 import com.jga.brickbreaker.config.GameConfig;
 import com.jga.brickbreaker.entity.Ball;
 import com.jga.brickbreaker.entity.Brick;
@@ -26,6 +27,7 @@ import com.jga.shape.RectangelUtils;
 public class GameWorld {
 
     // == attributes ==
+    private final SoundController soundController;
     private final ScoreController scoreController;
     private final EntityFactory factory;
 
@@ -40,9 +42,13 @@ public class GameWorld {
     private Array<Pickup> pickups = new Array<Pickup>();
 
     // == constructor ==
-    public GameWorld(ScoreController scoreController, EntityFactory factory) {
-        this.factory = factory;
+    public GameWorld(SoundController soundController,
+                     ScoreController scoreController,
+                     EntityFactory factory) {
+
+        this.soundController = soundController;
         this.scoreController = scoreController;
+        this.factory = factory;
         init();
     }
 
@@ -208,6 +214,7 @@ public class GameWorld {
         Polygon paddleBounds = paddle.getBounds();
 
         if(Intersector.overlapConvexPolygons(ballBounds, paddleBounds)){
+            soundController.hit();
             float ballCenterX = ball.getX() + ball.getWidth() / 2f;
             float percent =(ballCenterX - paddle.getX()) / paddle.getWidth(); // 0f - 1f
             // interpolate angle between 150 and 30
@@ -234,6 +241,8 @@ public class GameWorld {
             if(!Intersector.overlapConvexPolygons(ballPolygon, brickPolygon)){
                 continue;
             }
+
+            soundController.hit();
 
             // check wich side of brick is overlapping width ball
             Vector2 bottomLeft = RectangelUtils.getBottomLeft(brickBounds);
@@ -302,6 +311,7 @@ public class GameWorld {
             Polygon pickupBounds = pickup.getBounds();
 
             if(Intersector.overlapConvexPolygons(paddleBounds, pickupBounds)){
+                soundController.pickup();
                 float x = pickup.getX() + pickup.getWidth() / 2;
                 float y = pickup.getY();
 

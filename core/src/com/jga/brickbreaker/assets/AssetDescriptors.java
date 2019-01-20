@@ -1,6 +1,7 @@
 package com.jga.brickbreaker.assets;
 
 import com.badlogic.gdx.assets.AssetDescriptor;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -21,6 +22,15 @@ public final class AssetDescriptors {
     public static final AssetDescriptor<ParticleEffect> STAR =
             new AssetDescriptor<ParticleEffect>(AssetPaths.STAR, ParticleEffect.class);
 
+    public static final AssetDescriptor<Sound> HIT =
+            new AssetDescriptor<Sound>(AssetPaths.HIT, Sound.class);
+
+    public static final AssetDescriptor<Sound> LOST =
+            new AssetDescriptor<Sound>(AssetPaths.LOST, Sound.class);
+
+    public static final AssetDescriptor<Sound> PICKUP =
+            new AssetDescriptor<Sound>(AssetPaths.PICKUP, Sound.class);
+
     public static final Array<AssetDescriptor> ALL = new Array<AssetDescriptor>();
 
     // == static init ==
@@ -29,7 +39,10 @@ public final class AssetDescriptors {
                 FONT,
                 GAME_PLAY,
                 FIRE,
-                STAR
+                STAR,
+                HIT,
+                LOST,
+                PICKUP
         );
     }
 
