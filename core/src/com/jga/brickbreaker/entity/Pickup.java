@@ -8,7 +8,6 @@ public class Pickup extends EntityBase implements Pool.Poolable{
 
     // == attributes ==
     private PickupType type;
-    private Vector2 velocity = new Vector2();
 
     // == constructor ==
     public Pickup(){
@@ -16,18 +15,8 @@ public class Pickup extends EntityBase implements Pool.Poolable{
     }
 
     // == public methods ==
-    @Override
-    public void update(float delta){
-        super.update(delta);
-        setY(y + velocity.y * delta);
-    }
-
     public void setType(PickupType type){
         this.type = type;
-    }
-
-    public void setVelocityY(float velocityY){
-        velocity.y = velocityY;
     }
 
     public boolean isExpand(){

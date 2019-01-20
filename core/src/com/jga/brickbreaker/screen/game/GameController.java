@@ -5,6 +5,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.ParticleEffectPool;
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Intersector;
+import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
@@ -210,10 +211,10 @@ public class GameController {
     }
 
     private void checkBallWithPaddleCollision(){
-        Circle ballBounds = ball.getBounds();
-        Rectangle paddleBounds = paddle.getBounds();
+        Polygon ballBounds = ball.getBounds();
+        Polygon paddleBounds = paddle.getBounds();
 
-        if(Intersector.overlaps(ballBounds, paddleBounds)){
+        if(Intersector.overlapConvexPolygons(ballBounds, paddleBounds)){
             float ballCenterX = ball.getX() + ball.getWidth() / 2f;
             float percent =(ballCenterX - paddle.getX()) / paddle.getWidth(); // 0f - 1f
             // interpolate angle between 150 and 30
@@ -223,23 +224,33 @@ public class GameController {
     }
 
     private void checkBallWithBrickCollision(){
-        Circle ballBounds = ball.getBounds();
+        Polygon ballPolygon = ball.getBounds();
+        float ballRadius = ball.getWidth() / 2f;
+        Circle ballBounds = new Circle(
+                ball.getX() + ballRadius,
+                ball.getY() + ballRadius,
+                ballRadius
+        );
+
 
         for(int i = 0; i < bricks.size; i++){
             Brick brick = bricks.get(i);
-            Rectangle brickBounds = brick.getBounds();
+            Polygon brickPolygon = brick.getBounds();
+            Rectangle brickBounds = brickPolygon.getBoundingRectangle();
 
-            if(!Intersector.overlaps(ballBounds, brickBounds)){
+            if(!Intersector.overlapConvexPolygons(ballPolygon, brickPolygon)){
                 continue;
             }
 
-            Vector2 center = new Vector2(ballBounds.x, ballBounds.y);
-            float squareRadius = ballBounds.radius * ballBounds.radius;
-
+            // check wich side of brick is overlapping width ball
             Vector2 bottomLeft = RectangelUtils.getBottomLeft(brickBounds);
             Vector2 bottomRight = RectangelUtils.getBottomRight(brickBounds);
             Vector2 topLeft = RectangelUtils.getTopLeft(brickBounds);
             Vector2 topRight = RectangelUtils.getTopRight(brickBounds);
+
+            Vector2 center = new Vector2(ballBounds.x, ballBounds.y);
+            float squareRadius = ballBounds.radius * ballBounds.radius;
+
 
             boolean bottomHit = Intersector.intersectSegmentCircle(
                   bottomLeft, bottomRight, center, squareRadius
@@ -291,13 +302,13 @@ public class GameController {
     }
 
     private void checkPaddleWithPickupCollision(){
-        Rectangle paddleBounds = paddle.getBounds();
+        Polygon paddleBounds = paddle.getBounds();
 
         for(int i = 0; i < pickups.size; i++){
             Pickup pickup = pickups.get(i);
-            Rectangle pickupBounds = pickup.getBounds();
+            Polygon pickupBounds = pickup.getBounds();
 
-            if(Intersector.overlaps(paddleBounds, pickupBounds)){
+            if(Intersector.overlapConvexPolygons(paddleBounds, pickupBounds)){
                 addScript(pickup);
                 pickups.removeIndex(i);
                 factory.freePickup(pickup);

@@ -5,25 +5,7 @@ import com.jga.util.entity.EntityBase;
 
 public class Paddle extends EntityBase {
 
-    // == attributes ==
-    private Vector2 velocity = new Vector2();
-
     // == constructor ==
     public Paddle() {
-    }
-
-    // public methods ==
-    @Override
-    public void update(float delta){
-        super.update(delta);
-        setX(x + velocity.x * delta);
-    }
-
-    public float getVelocityX(){
-        return velocity.x;
-    }
-
-    public void setVelocityX(float velocityX){
-        velocity.x = velocityX;
     }
 }

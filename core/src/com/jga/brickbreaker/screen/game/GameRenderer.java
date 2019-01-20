@@ -12,6 +12,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Circle;
+import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
@@ -187,24 +188,24 @@ public class GameRenderer implements Disposable {
         renderer.setColor(Color.RED);
 
         // paddle
-        Rectangle paddleBounds = controller.getPaddle().getBounds();
-        ShapeRendererUtils.rect(renderer, paddleBounds);
+        Polygon paddleBounds = controller.getPaddle().getBounds();
+        ShapeRendererUtils.polygon(renderer, paddleBounds);
 
         // bricks
         for(Brick brick : controller.getBricks()){
-            ShapeRendererUtils.rect(renderer, brick.getBounds());
+            ShapeRendererUtils.polygon(renderer, brick.getBounds());
         }
 
         // ball
-        Circle ballBounds = controller.getBall().getBounds();
-        ShapeRendererUtils.circle(renderer, ballBounds);
+        Polygon ballBounds = controller.getBall().getBounds();
+        ShapeRendererUtils.polygon(renderer, ballBounds);
 
         // pickups
         Array<Pickup> pickups = controller.getPickups();
         for(int i = 0; i < pickups.size; i++){
             Pickup pickup = pickups.get(i);
-            Rectangle pickupBounds = pickup.getBounds();
-            ShapeRendererUtils.rect(renderer, pickupBounds);
+            Polygon pickupBounds = pickup.getBounds();
+            ShapeRendererUtils.polygon(renderer, pickupBounds);
         }
 
         // revert to old color
