@@ -55,6 +55,12 @@ public final class GameConfig {
     public static final float PICKUP_SPAWN_TIME = 2f;
     public static final float PICKUP_VELOCITY_Y = -6f;
 
+    public static final int LIVES_START = 3;
+
+    public static final float LIFE_HUD_WIDTH = 40f;
+    public static final float LIFE_HUD_HEIGHT = 12f;
+    public static final float LIFE_HUD_SPACING = 10f;
+
     // == constructor ==
     private GameConfig(){
 

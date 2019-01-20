@@ -41,6 +41,8 @@ public class GameWorld {
     private Array<ParticleEffectPool.PooledEffect> effects = new Array<ParticleEffectPool.PooledEffect>();
     private Array<Pickup> pickups = new Array<Pickup>();
 
+    private int lives = GameConfig.LIVES_START;
+
     // == constructor ==
     public GameWorld(SoundController soundController,
                      ScoreController scoreController,
@@ -136,6 +138,14 @@ public class GameWorld {
         drawDebug = !drawDebug;
     }
 
+    public boolean isGameOver(){
+        return lives <= 0;
+    }
+
+    public int getLives() {
+        return lives;
+    }
+
     // == private methods ==
     private void blockPaddleFromLeavingWorld() {
         // block left
@@ -154,8 +164,11 @@ public class GameWorld {
     private void blockBallFromLeavingWorld() {
         // bottom
         if (ball.getY() <= 0){
-            ball.setY(0);
-            ball.multiplyVelocityY(-1);
+            soundController.lost();
+            lives--;
+            restart();
+//            ball.setY(0);
+//            ball.multiplyVelocityY(-1);
         }
 
         // top
@@ -324,6 +337,11 @@ public class GameWorld {
     }
 
     private void startLevel(){
+        restart();
+        bricks.addAll(factory.createBricks());
+    }
+
+    private void restart() {
         for (int i = 0; i < pickups.size; i++){
             Pickup pickup = pickups.get(i);
             factory.freePickup(pickup);
@@ -335,7 +353,6 @@ public class GameWorld {
             effect.free();
             effects.removeIndex(i);
         }
-        bricks.addAll(factory.createBricks());
         paddle.setPosition(GameConfig.PADDLE_START_X, GameConfig.PADDLE_START_Y);
         ball.setPosition(GameConfig.BALL_START_X, GameConfig.BALL_START_Y);
         ball.stop();

@@ -48,7 +48,9 @@ public class GameScreen extends ScreenAdapter {
     }
     @Override
     public void render(float delta) {
-        paddleInputController.update(delta);
+        if(!gameWorld.isGameOver()){
+            paddleInputController.update(delta);
+        }
         controller.update(delta);
         renderer.render(delta);
     }

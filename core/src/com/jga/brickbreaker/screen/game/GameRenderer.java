@@ -233,6 +233,13 @@ public class GameRenderer implements Disposable {
         layout.setText(scoreFont, scoreString);
         scoreFont.draw(batch, layout,
                 0, GameConfig.HUD_HEIGHT - layout.height);
+
+        String liveString = "LIVES: " + gameWorld.getLives();
+        layout.setText(scoreFont, liveString);
+        scoreFont.draw(batch, layout,
+                GameConfig.HUD_WIDTH - layout.width,
+                GameConfig.HUD_HEIGHT -layout.height
+        );
     }
 
     private TextureRegion findPickupRegion(Pickup pickup){
