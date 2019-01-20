@@ -159,6 +159,10 @@ public abstract class EntityBase {
         scriptController.removeScript(toRemove);
     }
 
+    public float getAngleDeg(){
+        return MathUtils.atan2(velocity.y, velocity.x) * MathUtils.radiansToDegrees;
+    }
+
     // == protected methods ==
     protected float[] createVertices(){
         return ShapeUtils.createRectangle(width, height);

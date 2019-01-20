@@ -17,6 +17,8 @@ import com.jga.brickbreaker.entity.EntityFactory;
 import com.jga.brickbreaker.entity.Paddle;
 import com.jga.brickbreaker.entity.Pickup;
 import com.jga.brickbreaker.input.PaddleInputController;
+import com.jga.brickbreaker.script.BallSlowDownScript;
+import com.jga.brickbreaker.script.BallSpeedUpScript;
 import com.jga.brickbreaker.script.PaddleExpandScript;
 import com.jga.brickbreaker.script.PaddleShrinkScript;
 import com.jga.shape.RectangelUtils;
@@ -317,7 +319,7 @@ public class GameController {
     }
 
     private void activateBall(){
-        ball.setVelocity(GameConfig.BALL_START_ANGLE, GameConfig.BALL_VELOCITY);
+        ball.setVelocity(GameConfig.BALL_START_ANGLE, GameConfig.BALL_START_SPEED);
     }
 
     private void startLevel(){
@@ -342,6 +344,10 @@ public class GameController {
             paddle.addScript(new PaddleExpandScript());
         }else if(pickup.isShrink()){
             paddle.addScript(new PaddleShrinkScript());
+        }else if(pickup.isSpeedUp()){
+            ball.addScript(new BallSpeedUpScript());
+        }else if (pickup.isSlowDown()){
+            ball.addScript(new BallSlowDownScript());
         }
     }
 }
