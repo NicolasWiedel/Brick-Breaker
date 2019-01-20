@@ -52,6 +52,10 @@ public class GameController {
         gameWorld.update(delta);
     }
 
+    public Vector2 screenToWorld( Vector2 screenCoordinates){
+        return renderer.screenToWorld(screenCoordinates);
+    }
+
     // == private methods ==
     private void handleDebugInput(){
         if(Gdx.input.isKeyJustPressed(Input.Keys.F5)){

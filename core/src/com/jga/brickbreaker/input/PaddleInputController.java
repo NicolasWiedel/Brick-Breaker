@@ -2,6 +2,8 @@ package com.jga.brickbreaker.input;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
 import com.jga.brickbreaker.config.GameConfig;
 import com.jga.brickbreaker.entity.Paddle;
 import com.jga.brickbreaker.screen.game.GameController;
@@ -11,12 +13,18 @@ public class PaddleInputController {
     // == attributes ==
     private final Paddle paddle;
     private final GameController controller;
+    private final Rectangle screenLeftSide;
+    private final Rectangle screenRightSide;
 
     // == constructor ==
 
     public PaddleInputController(Paddle paddle, GameController controller) {
         this.paddle = paddle;
         this.controller = controller;
+
+        float halfWorldWidth = GameConfig.WORLD_WIDTH / 2;
+        screenLeftSide = new Rectangle(0, 0, halfWorldWidth, GameConfig.WORLD_HEIGHT);
+        screenRightSide = new Rectangle(halfWorldWidth, 0, halfWorldWidth, GameConfig.WORLD_HEIGHT);
     }
 
     // == public methods ==
@@ -30,6 +38,29 @@ public class PaddleInputController {
             velocityX = GameConfig.PADDLE_VELOCITY_X;
         }
 
+        if(Gdx.input.isTouched()){
+            float screenX = Gdx.input.getX(); // in pixels
+            float screenY = Gdx.input.getY(); // in pixels
+
+            Vector2 screenCoordinates = new Vector2(screenX, screenY); // in pixels
+            Vector2 worldCoordinates = controller.screenToWorld(screenCoordinates);
+
+            if(isLeftSideTouched(worldCoordinates)){
+                velocityX = -GameConfig.PADDLE_VELOCITY_X;
+            }else if (isRightSideTouched(worldCoordinates)){
+                velocityX = GameConfig.PADDLE_VELOCITY_X;
+            }
+        }
+
         paddle.setVelocityX(velocityX);
+    }
+
+    // == private methods ==
+    private boolean isLeftSideTouched(Vector2 worldCoordinates){
+        return screenLeftSide.contains(worldCoordinates);
+    }
+
+    private boolean isRightSideTouched(Vector2 worldCoordinates){
+        return screenRightSide.contains(worldCoordinates);
     }
 }

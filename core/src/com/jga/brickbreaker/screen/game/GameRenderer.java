@@ -14,6 +14,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
@@ -110,6 +111,10 @@ public class GameRenderer implements Disposable {
         viewport.update(width, height, true);
         hudViewport.update(width, height, true);
         ViewportUtils.debugPixelsPerUnit(viewport);
+    }
+
+    public Vector2 screenToWorld(Vector2 screenCoordinates){
+        return viewport.unproject(screenCoordinates);
     }
 
     @Override
