@@ -314,6 +314,17 @@ public class GameWorld {
     }
 
     private void startLevel(){
+        for (int i = 0; i < pickups.size; i++){
+            Pickup pickup = pickups.get(i);
+            factory.freePickup(pickup);
+            pickups.removeIndex(i);
+        }
+
+        for (int i =0; i < effects.size; i++){
+            ParticleEffectPool.PooledEffect effect = effects.get(i);
+            effect.free();
+            effects.removeIndex(i);
+        }
         bricks.addAll(factory.createBricks());
         paddle.setPosition(GameConfig.PADDLE_START_X, GameConfig.PADDLE_START_Y);
         ball.setPosition(GameConfig.BALL_START_X, GameConfig.BALL_START_Y);
