@@ -8,6 +8,7 @@ import com.jga.brickbreaker.common.ScoreController;
 import com.jga.brickbreaker.common.SoundController;
 import com.jga.brickbreaker.entity.EntityFactory;
 import com.jga.brickbreaker.input.PaddleInputController;
+import com.jga.brickbreaker.screen.menu.MenuScreen;
 import com.jga.util.game.GameBase;
 
 public class GameScreen extends ScreenAdapter {
@@ -48,11 +49,18 @@ public class GameScreen extends ScreenAdapter {
     }
     @Override
     public void render(float delta) {
-        if(!gameWorld.isGameOver()){
+
+        boolean gameOver = gameWorld.isGameOver();
+
+        if(!gameOver){
             paddleInputController.update(delta);
         }
         controller.update(delta);
         renderer.render(delta);
+
+        if (gameOver){
+            game.setScreen(new MenuScreen(game));
+        }
     }
 
     @Override

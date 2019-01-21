@@ -5,6 +5,7 @@ import com.badlogic.gdx.utils.Array;
 import com.jga.brickbreaker.assets.AssetDescriptors;
 import com.jga.brickbreaker.config.GameConfig;
 import com.jga.brickbreaker.screen.game.GameScreen;
+import com.jga.brickbreaker.screen.menu.MenuScreen;
 import com.jga.screen.loading.LoadingScreenBase;
 import com.jga.util.game.GameBase;
 
@@ -23,7 +24,7 @@ public class LoadingScreen extends LoadingScreenBase {
 
     @Override
     protected void onLoadDone() {
-        game.setScreen(new GameScreen(game));
+        game.setScreen(new MenuScreen(game));
     }
 
     @Override
