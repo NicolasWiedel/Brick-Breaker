@@ -32,6 +32,7 @@ import com.jga.util.ViewportUtils;
 import com.jga.util.debug.DebugCameraController;
 import com.jga.util.debug.ShapeRendererUtils;
 import com.jga.util.entity.EntityBase;
+import com.jga.util.paralax.ParallaxLayer;
 import com.sun.corba.se.impl.orb.ParserTable;
 
 public class GameRenderer implements Disposable {
@@ -135,7 +136,16 @@ public class GameRenderer implements Disposable {
 
     private void drawGamePlay(){
         // background
-        batch.draw(backgroundRegion, 0,0, GameConfig.WORLD_WIDTH, GameConfig.WORLD_HEIGHT);
+//        batch.draw(backgroundRegion, 0,0, GameConfig.WORLD_WIDTH, GameConfig.WORLD_HEIGHT);
+        ParallaxLayer background = gameWorld.getBackground();
+        Rectangle firstRegionBounds = background.getFirstRegionBounds();
+        Rectangle secondRegionBounds = background.getSecondRegionBounds();
+
+        batch.draw(backgroundRegion, firstRegionBounds.x, firstRegionBounds.y,
+                firstRegionBounds.width, firstRegionBounds.height);
+        batch.draw(backgroundRegion, secondRegionBounds.x, secondRegionBounds.y,
+                secondRegionBounds.width, secondRegionBounds.height);
+
 
         //paddle
         Paddle paddle = gameWorld.getPaddle();
@@ -191,6 +201,13 @@ public class GameRenderer implements Disposable {
         //save old color
         Color oldColor = renderer.getColor().cpy();
         renderer.setColor(Color.RED);
+
+        // background
+        ParallaxLayer background = gameWorld.getBackground();
+        Rectangle first = background.getFirstRegionBounds();
+        Rectangle second = background.getSecondRegionBounds();
+        ShapeRendererUtils.rect(renderer, first);
+        ShapeRendererUtils.rect(renderer, second);
 
         // paddle
         Polygon paddleBounds = gameWorld.getPaddle().getBounds();

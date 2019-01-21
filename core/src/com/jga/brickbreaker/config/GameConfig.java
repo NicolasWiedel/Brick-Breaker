@@ -61,6 +61,8 @@ public final class GameConfig {
     public static final float LIFE_HUD_HEIGHT = 12f;
     public static final float LIFE_HUD_SPACING = 10f;
 
+    public static final float BACKGROUND_SPEED = 1f;
+
     // == constructor ==
     private GameConfig(){
 

@@ -8,6 +8,8 @@ import com.badlogic.gdx.utils.Pool;
 import com.badlogic.gdx.utils.Pools;
 import com.jga.brickbreaker.assets.AssetDescriptors;
 import com.jga.brickbreaker.config.GameConfig;
+import com.jga.util.Direction;
+import com.jga.util.paralax.ParallaxLayer;
 
 public class EntityFactory {
 
@@ -37,6 +39,14 @@ public class EntityFactory {
     }
 
     // == public methods ==
+    public ParallaxLayer createBackground(){
+        ParallaxLayer background = new ParallaxLayer();
+        background.setSize(GameConfig.WORLD_WIDTH, GameConfig.WORLD_HEIGHT);
+        background.setDirection(Direction.DOWN);
+        background.setSpeed(GameConfig.BACKGROUND_SPEED);
+        return background;
+    }
+
     public Paddle createPaddle(){
         Paddle paddle = new Paddle();
         paddle.setPosition(GameConfig.PADDLE_START_X, GameConfig.PADDLE_START_Y);

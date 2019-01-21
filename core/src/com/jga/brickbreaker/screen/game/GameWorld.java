@@ -23,6 +23,7 @@ import com.jga.brickbreaker.script.BallSpeedUpScript;
 import com.jga.brickbreaker.script.PaddleExpandScript;
 import com.jga.brickbreaker.script.PaddleShrinkScript;
 import com.jga.shape.RectangelUtils;
+import com.jga.util.paralax.ParallaxLayer;
 
 public class GameWorld {
 
@@ -34,6 +35,7 @@ public class GameWorld {
     private Paddle paddle;
     private Array<Brick> bricks = new Array<Brick>();
     private Ball ball;
+    private ParallaxLayer background;
 
     private boolean drawGrid = true;
     private boolean drawDebug = true;
@@ -56,6 +58,7 @@ public class GameWorld {
 
     // == init ==
     private void init(){
+        background = factory.createBackground();
         paddle = factory.createPaddle();
         ball = factory.createBall();
         startLevel();
@@ -63,6 +66,7 @@ public class GameWorld {
 
     // == public methoods =
     public void update(float delta) {
+        background.update(delta);
 
         if(ball.isNotActive()){
             return;
@@ -92,6 +96,10 @@ public class GameWorld {
         if(bricks.size == 0){
             startLevel();
         }
+    }
+
+    public ParallaxLayer getBackground() {
+        return background;
     }
 
     public Paddle getPaddle() {
