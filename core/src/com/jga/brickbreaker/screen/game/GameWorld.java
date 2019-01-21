@@ -37,8 +37,8 @@ public class GameWorld {
     private Ball ball;
     private ParallaxLayer background;
 
-    private boolean drawGrid = true;
-    private boolean drawDebug = true;
+    private boolean drawGrid = false;
+    private boolean drawDebug = false;
 
     private Array<ParticleEffectPool.PooledEffect> effects = new Array<ParticleEffectPool.PooledEffect>();
     private Array<Pickup> pickups = new Array<Pickup>();
@@ -61,6 +61,7 @@ public class GameWorld {
         background = factory.createBackground();
         paddle = factory.createPaddle();
         ball = factory.createBall();
+        scoreController.reset();
         startLevel();
     }
 
@@ -175,6 +176,10 @@ public class GameWorld {
             soundController.lost();
             lives--;
             restart();
+
+            if(isGameOver()){
+                scoreController.updateHighScore();
+            }
 //            ball.setY(0);
 //            ball.multiplyVelocityY(-1);
         }

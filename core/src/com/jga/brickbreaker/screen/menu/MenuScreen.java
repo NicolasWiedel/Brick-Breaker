@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -14,8 +15,10 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.jga.brickbreaker.BrickbreakerGame;
 import com.jga.brickbreaker.assets.AssetDescriptors;
 import com.jga.brickbreaker.assets.RegionNames;
+import com.jga.brickbreaker.common.ScoreController;
 import com.jga.brickbreaker.config.GameConfig;
 import com.jga.brickbreaker.screen.game.GameScreen;
 import com.jga.util.GdxUtils;
@@ -30,6 +33,7 @@ public class MenuScreen extends ScreenAdapter {
     // == attributes ==
     private final GameBase game;
     private final AssetManager assetManager;
+    private final ScoreController scoreController;
 
     private Viewport viewport;
     private Stage stage;
@@ -38,6 +42,7 @@ public class MenuScreen extends ScreenAdapter {
     public MenuScreen(GameBase game) {
         this.game = game;
         assetManager = game.getAssetManager();
+        scoreController = ((BrickbreakerGame)game).getScoreController();
     }
 
     // == public methods ==
@@ -45,7 +50,7 @@ public class MenuScreen extends ScreenAdapter {
     public void show() {
         viewport = new FitViewport(GameConfig.HUD_WIDTH, GameConfig.HUD_HEIGHT);
         stage = new Stage(viewport, game.getBatch());
-        stage.setDebugAll(true);
+        stage.setDebugAll(false);
 
         Skin skin = assetManager.get(AssetDescriptors.SKIN);
         TextureAtlas gamePlayAtlas = assetManager.get(AssetDescriptors.GAME_PLAY);
@@ -71,8 +76,12 @@ public class MenuScreen extends ScreenAdapter {
             }
         });
 
+        String highScoreString = "BEST: " + scoreController.getHighScoreString();
+        Label highScoreLabel = new Label(highScoreString, skin);
+
         table.add(playButton).row();
         table.add(quitButton).row();
+        table.add(highScoreLabel);
 
         table.center();
         table.setFillParent(true);

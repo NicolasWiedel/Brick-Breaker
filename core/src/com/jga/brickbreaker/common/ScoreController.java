@@ -44,7 +44,7 @@ public class ScoreController {
         return Integer.toString(score);
     }
 
-    private String getHighScoreString(){
+    public String getHighScoreString(){
         return Integer.toString(highScore);
     }
 
