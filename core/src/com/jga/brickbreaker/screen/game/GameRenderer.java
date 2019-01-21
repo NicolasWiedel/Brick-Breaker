@@ -234,12 +234,32 @@ public class GameRenderer implements Disposable {
         scoreFont.draw(batch, layout,
                 0, GameConfig.HUD_HEIGHT - layout.height);
 
-        String liveString = "LIVES: " + gameWorld.getLives();
-        layout.setText(scoreFont, liveString);
-        scoreFont.draw(batch, layout,
-                GameConfig.HUD_WIDTH - layout.width,
-                GameConfig.HUD_HEIGHT -layout.height
-        );
+//        String liveString = "LIVES: " + gameWorld.getLives();
+//        layout.setText(scoreFont, liveString);
+//        scoreFont.draw(batch, layout,
+//                GameConfig.HUD_WIDTH - layout.width,
+//                GameConfig.HUD_HEIGHT -layout.height
+//        );
+
+        int lives = gameWorld.getLives();
+        Color oldColor = batch.getColor().cpy();
+        float offsetX = GameConfig.LIVES_START * (GameConfig.LIFE_HUD_WIDTH + GameConfig.LIFE_HUD_SPACING);
+        float offsetY = 36f;
+        float spacing = GameConfig.LIFE_HUD_WIDTH + GameConfig.LIFE_HUD_SPACING;
+
+        float x = GameConfig.HUD_WIDTH - offsetX;
+        float y = GameConfig.HUD_HEIGHT - offsetY;
+
+        for (int i = 0; i < GameConfig.LIVES_START; i++){
+            if (lives <= i){
+                batch.setColor(1, 1, 1,0.5f);
+            }
+            batch.draw(paddleRegion, x + i * spacing, y,
+                    GameConfig.LIFE_HUD_WIDTH, GameConfig.LIFE_HUD_HEIGHT
+            );
+        }
+
+        batch.setColor(oldColor);
     }
 
     private TextureRegion findPickupRegion(Pickup pickup){
