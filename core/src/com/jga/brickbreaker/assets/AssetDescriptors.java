@@ -5,6 +5,7 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Array;
 
 public final class AssetDescriptors {
@@ -31,6 +32,9 @@ public final class AssetDescriptors {
     public static final AssetDescriptor<Sound> PICKUP =
             new AssetDescriptor<Sound>(AssetPaths.PICKUP, Sound.class);
 
+    public static  final AssetDescriptor<Skin> SKIN =
+            new AssetDescriptor<Skin>(AssetPaths.SKIN, Skin.class);
+
     public static final Array<AssetDescriptor> ALL = new Array<AssetDescriptor>();
 
     // == static init ==
@@ -42,7 +46,8 @@ public final class AssetDescriptors {
                 STAR,
                 HIT,
                 LOST,
-                PICKUP
+                PICKUP,
+                SKIN
         );
     }
 

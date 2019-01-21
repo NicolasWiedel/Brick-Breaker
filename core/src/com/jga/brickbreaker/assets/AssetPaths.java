@@ -17,6 +17,8 @@ public final class AssetPaths {
 
     public static final String PICKUP = "sounds/pickup.wav";
 
+    public static final String SKIN = "ui/skin.json";
+
     // == constructor ==
     private AssetPaths(){
 
